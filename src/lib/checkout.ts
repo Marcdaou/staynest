@@ -26,7 +26,22 @@ export async function startCheckout(req: CheckoutRequest): Promise<string> {
     },
   )
 
-  if (error) throw new Error(error.message)
+  // supabase-js collapses any non-2xx into "Edge Function returned a non-2xx
+  // status code", which hides the reason. The body carries the real message.
+  if (error) throw new Error(await messageFrom(error))
   if (!data?.url) throw new Error(data?.error ?? 'Checkout session could not be created')
   return data.url
+}
+
+async function messageFrom(error: { message: string; context?: unknown }) {
+  const response = error.context
+  if (response instanceof Response) {
+    try {
+      const body = await response.clone().json()
+      if (typeof body?.error === 'string') return body.error
+    } catch {
+      // fall through to the generic message
+    }
+  }
+  return error.message
 }
