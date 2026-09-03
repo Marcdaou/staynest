@@ -3,6 +3,8 @@
 An Airbnb-style vacation rental marketplace — React + Tailwind on the front,
 Supabase (Postgres, auth, RLS, Edge Functions) on the back, Stripe Checkout for payments.
 
+**Live:** https://staynest-six.vercel.app
+
 ![StayNest home](docs/home.png)
 
 ## Stack
@@ -64,8 +66,12 @@ Stripe signature and flips the booking to `confirmed` (or `cancelled` on expiry)
 npx playwright test
 ```
 
-Covers browsing, search, category filtering, price arithmetic, sign-in, wishlist
-persistence across reloads, and RLS isolation between users.
+14 specs covering browsing, search, category filtering, broken-image detection,
+price arithmetic, sign-in, wishlist persistence across reloads, RLS isolation
+between users, and a full Stripe test-card booking that must come back
+`confirmed` in Trips via the webhook.
+
+Point them at the deployment with `E2E_BASE_URL=https://staynest-six.vercel.app npx playwright test`.
 
 ## Demo account
 
