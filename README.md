@@ -3,8 +3,6 @@
 An Airbnb-style vacation rental marketplace — React + Tailwind on the front,
 Supabase (Postgres, auth, RLS, Edge Functions) on the back, Stripe Checkout for payments.
 
-**Live:** https://staynest-six.vercel.app
-
 ![StayNest home](docs/home.png)
 
 ## Stack
@@ -76,3 +74,19 @@ Point them at the deployment with `E2E_BASE_URL=https://staynest-six.vercel.app 
 ## Demo account
 
 `guest@staynest.dev` / `staynest-demo-2026`
+
+## Deploying
+
+The repository holds no credentials. Before the first deploy, set these in
+**Vercel → Settings → Environment Variables** (they are read at build time):
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_STRIPE_PUBLISHABLE_KEY`
+
+And the server-side pair as Supabase Edge Function secrets:
+
+```bash
+supabase secrets set --project-ref <ref> \
+  STRIPE_SECRET_KEY=sk_test_... STRIPE_WEBHOOK_SECRET=whsec_...
+```
