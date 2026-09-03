@@ -1,4 +1,15 @@
+import { readFileSync } from 'node:fs'
 import { defineConfig, devices } from '@playwright/test'
+
+// Minimal .env loader so specs can read credentials without committing them.
+try {
+  for (const line of readFileSync('.env', 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/)
+    if (m && m[2] && !process.env[m[1]]) process.env[m[1]] = m[2].trim()
+  }
+} catch {
+  // no .env present — rely on the ambient environment
+}
 
 const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:5173'
 

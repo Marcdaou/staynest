@@ -1,9 +1,12 @@
 import { expect, test } from '@playwright/test'
 import { DEMO_EMAIL, DEMO_PASSWORD } from './helpers'
 
-const URL = process.env.VITE_SUPABASE_URL ?? 'https://REDACTED_SUPABASE_PROJECT_REF.supabase.co'
-const KEY =
-  process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? 'REDACTED_VITE_SUPABASE_PUBLISHABLE_KEY'
+const URL = process.env.VITE_SUPABASE_URL
+const KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY
+
+if (!URL || !KEY) {
+  throw new Error('Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in .env')
+}
 
 async function token() {
   const res = await fetch(`${URL}/auth/v1/token?grant_type=password`, {

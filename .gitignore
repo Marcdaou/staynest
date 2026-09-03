@@ -8,3 +8,4 @@ test-results/
 playwright-report/
 .vercel
 supabase/.temp/
+.env.production
